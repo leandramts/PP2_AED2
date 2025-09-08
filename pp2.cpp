@@ -211,7 +211,7 @@ public:
     std::vector<int> process_tests()
     {
         std::string horse1, horse2, horse3, horse4, king;
-        std::cin >> horse1 >> horse2 >> horse3 >> horse4 >> king; // lê as entradas das posicoes iniciais dos cavalos e do rei, em string.
+        std::cin >> horse1 >> horse2 >> horse3 >> horse4 >> king; // le as entradas das posicoes iniciais dos cavalos e do rei, em string.
 
         Vertex v_horse1 = position_to_vertice(horse1); // transforma a string em um numero de vertice do grafo
         Vertex v_horse2 = position_to_vertice(horse2);
@@ -223,7 +223,7 @@ public:
         bfs.processBFS(v_king);
 
         std::vector<int> dist_horses;
-        // pega distâncias de cada cavalo para ameacar o rei
+        // pega distancias de cada cavalo para ameacar o rei
         dist_horses.push_back(bfs.get_distance(v_horse1) - 1);
         dist_horses.push_back(bfs.get_distance(v_horse2) - 1);
         dist_horses.push_back(bfs.get_distance(v_horse3) - 1);

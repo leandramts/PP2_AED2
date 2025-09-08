@@ -133,7 +133,27 @@ public:
         {
             Vertex u = Q.front();              // analisa o vertice da frente na fila
             Q.dequeue();                       // tira o primeiro da fila
-            for (const auto &v : g.get_adj(u)) // loop para pegar os vertices adjacentes do vertice u que estava na frente da fila
+
+            std::list<Vertex> list_adj = g.get_adj(u); // pega a lista de adjacentes do vértice u
+
+            // Selection Sort para ordenar a lista em ordem crescente
+            for (auto atual = list_adj.begin(); atual != list_adj.end(); ++atual) {
+                auto menor = atual;
+                auto proximo = atual;
+                ++proximo;
+                for (; proximo != list_adj.end(); ++proximo) {
+                    if (*proximo < *menor) {
+                        menor = proximo;
+                    }
+                }
+                if (menor != atual) {
+                    int temp = *atual;
+                    *atual = *menor;
+                    *menor = temp;
+                }
+            }
+
+            for (const auto &v : list_adj) // loop para pegar os vertices adjacentes do vertice u que estava na frente da fila
             {
                 if (color[v] == Color::white) // se for branco (ainda nao encontrado)
                 {

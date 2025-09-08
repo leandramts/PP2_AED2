@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <list>
 #include <vector>
@@ -7,7 +6,6 @@
 
 typedef unsigned int uint;
 typedef unsigned int Vertex;
-
 
 class GraphAl {
     private:
@@ -89,14 +87,13 @@ class Queue
 
 };
 
-enum class Color
-{
-    white, gray, black
-};
-
 class BFS
 {
     private:
+        enum class Color
+        {
+            white, gray, black
+        };
         GraphAl& g;
         std::vector <Color> color;
         std::vector <uint> dist;
@@ -155,6 +152,10 @@ class BFS
     }
 };
 
+class HorsesAttack
+{
+    private:
+        GraphAl g;
 
 void horses_paths(GraphAl& g) 
 {
@@ -204,9 +205,14 @@ Vertex position_to_vertice(std::string position)
     return initial_line*8 + initial_row;
 }
 
-void process_tests(GraphAl& g, int tests) 
-{
-    for (int t = 0; t < tests; t++) 
+    public:
+        HorsesAttack(): g(64) 
+        {
+            horses_paths(g);
+        }
+
+
+    std::vector<int> process_tests() 
     {
         std::string horse1, horse2, horse3, horse4, king;
         std::cin >> horse1 >> horse2 >> horse3 >> horse4 >> king; // lê as entradas das posicoes iniciais dos cavalos e do rei, em string.
@@ -220,32 +226,53 @@ void process_tests(GraphAl& g, int tests)
         BFS bfs(g);  // executa a BFS a partir do rei
         bfs.processBFS(v_king);
 
+        std::vector<int> dist_horses;
         // pega distâncias de cada cavalo para ameacar o rei
-        int dist_h1 = bfs.get_distance(v_horse1) - 1 ;
-        int dist_h2 = bfs.get_distance(v_horse2) - 1;
-        int dist_h3 = bfs.get_distance(v_horse3) - 1;
-        int dist_h4 = bfs.get_distance(v_horse4) - 1;
+        dist_horses.push_back(bfs.get_distance(v_horse1) - 1);
+        dist_horses.push_back(bfs.get_distance(v_horse2) - 1);
+        dist_horses.push_back(bfs.get_distance(v_horse3) - 1);
+        dist_horses.push_back(bfs.get_distance(v_horse4) - 1);
 
-        // imprime resultado do caso de teste
-        std::cout << "Caso " << t+1 << ":\n";
-        std::cout << horse1 << " -> " << dist_h1 << "\n";
-        std::cout << horse2 << " -> " << dist_h2 << "\n";
-        std::cout << horse3 << " -> " << dist_h3 << "\n";
-        std::cout << horse4 << " -> " << dist_h4 << "\n";
-        std::cout << std::endl;
+        std::vector<int> lowest_dists;
+        int min_dist = std::numeric_limits<int>::max();
+        for (auto d : dist_horses)
+        {
+            if (d < min_dist)
+                min_dist = d;
+        }
+
+        for (auto h : dist_horses)
+        {
+            if (h == min_dist)
+                lowest_dists.push_back(h);
+        }
+
+        return lowest_dists;
     }
-}
+};
 
 
 int main() {
-    GraphAl g(64); // 64 vértices do tabuleiro
-
-    horses_paths(g);
+    HorsesAttack ha;
 
     int tests;
     std::cin >> tests;
     
-    process_tests(g, tests);
+    std::vector<std::vector<int>> results; // vetor de vetores para armazenar os resultados de cada teste
+
+    for (int i = 0; i < tests; i++)
+    {
+        results.push_back(ha.process_tests());
+    }
+
+    for (int i = 0; i < tests; i++)
+    {
+        for (const auto& r : results[i])
+        {
+            std::cout << r << " ";
+        }
+        std::cout << std::endl;
+    }
 
     return 0;
 }

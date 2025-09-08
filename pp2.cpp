@@ -134,7 +134,7 @@ public:
             Vertex u = Q.front();              // analisa o vertice da frente na fila
             Q.dequeue();                       // tira o primeiro da fila
 
-            std::list<Vertex> list_adj = g.get_adj(u); // pega a lista de adjacentes do vértice u
+            std::list<Vertex> list_adj = g.get_adj(u); // pega a lista de adjacentes do vertice u
 
             // Selection Sort para ordenar a lista em ordem crescente
             for (auto atual = list_adj.begin(); atual != list_adj.end(); ++atual) {
@@ -292,3 +292,4 @@ int main()
 
     return 0;
 }
+
